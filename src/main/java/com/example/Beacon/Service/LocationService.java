@@ -12,7 +12,7 @@ public interface LocationService {
 
     public List<Location> getAllLocation();
 
-    public Location updateLocation(Long id, Location location);
+    public String updateLocation(Long id, String location);
 
     public void deleteLocation(Long id);
 }

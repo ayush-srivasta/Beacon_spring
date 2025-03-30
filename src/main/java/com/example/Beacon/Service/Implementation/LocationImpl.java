@@ -7,6 +7,7 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,11 +35,16 @@ public class LocationImpl implements LocationService {
     }
 
     @Override
-    public Location updateLocation(Long id, Location location) {
-        Location tempLocation = locationRepo.findById(id).orElseThrow(() -> new NoSuchElementException("No Such Location Exist"));
-        tempLocation = location;
-        locationRepo.save(tempLocation);
-        return locationRepo.findById(id).get();
+    public String updateLocation(Long id, String lattitude) {
+        Location location1 = locationRepo.findById(id).orElseThrow(() -> new RuntimeException("Location not found"));
+        location1.setLast_updated(LocalDateTime.now());
+        location1.setLatest_location(lattitude);
+        List<String> history = location1.getLocation_history();
+
+        history.add(lattitude);
+        location1.setLocation_history(history);
+        locationRepo.save(location1);
+        return lattitude;
 
     }
 
